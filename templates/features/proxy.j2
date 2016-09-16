@@ -1,0 +1,11 @@
+  location / {
+    proxy_pass              {{feature_config.target}};
+    proxy_set_header        Host            $host;
+    proxy_set_header        X-Real-IP       $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+{% if feature_config.append is defined %}
+{% for line in feature_config.append %}
+    {{line}}
+{% endfor %}
+{% endif %}
+  }

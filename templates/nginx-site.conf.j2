@@ -1,0 +1,42 @@
+{% if encryption != "force" %}
+server {
+  listen {{http_port}};
+  listen [::]:{{http_port}};
+  server_name{% for alias in aliases %} {{alias}}{% endfor %};
+{% if encryption == "redirect" %}
+  rewrite ^ https://{{site_name}}$request_uri? permanent;
+{% elif (encryption == false) or (encryption == "optional") %}
+{% for feature_name, feature_config in features.items() %}
+{% include "features/%s.j2" % feature_name %}
+
+{% endfor %}
+{% endif %}
+{% if locations is defined %}
+{% include "general/locations.j2" %}
+{% endif %}
+
+{% include "general/log.j2" %}
+
+}
+{% endif %}
+{% if encryption != false %}
+server {
+  listen {{https_port}} ssl;
+  listen [::]:{{https_port}} ssl;
+  server_name{% for alias in aliases %} {{alias}}{% endfor %};
+
+{% include "general/ssl.j2" %}
+
+{% if features is defined %}
+{% for feature_name, feature_config in features.items() %}
+{% include "features/%s.j2" % feature_name %}
+
+{% endfor %}
+{% endif %}
+{% if locations is defined %}
+{% include "general/locations.j2" %}
+{% endif %}
+{% include "general/log.j2" %}
+
+}
+{% endif %}

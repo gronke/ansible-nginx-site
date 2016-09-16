@@ -1,0 +1,11 @@
+  ssl on;
+  ssl_stapling on;
+  ssl_stapling_verify on;
+  ssl_certificate {{ssl_certificate_path}};
+  ssl_trusted_certificate {{ssl_trusted_certificate_path}};
+  ssl_certificate_key {{ssl_key_path}};
+  ssl_ciphers '{{ssl_ciphers}}';
+  ssl_protocols {{ssl_protocols}};
+  ssl_dhparam '{{ssl_dh_file}}';
+  ssl_prefer_server_ciphers on;
+  ssl_session_cache shared:SSL:10m;

@@ -1,0 +1,7 @@
+{% for item in locations %}
+  location {{item.location}} {
+    {% for line in item.config %}
+    {{line}}
+    {% endfor %}
+  }
+{% endfor %}

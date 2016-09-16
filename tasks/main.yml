@@ -1,0 +1,47 @@
+---
+
+- name: nginx is installed
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    name: nginx
+    state: latest
+
+- stat:
+    path: "{{ ssl_dh_file }}"
+  register: _dh_file_st
+
+- name: Diffie-Hellman parameter is generated
+  shell: /usr/bin/openssl dhparam -out "{{ ssl_dh_file }}" {{ ssl_dh_size }}
+  args:
+    chdir:
+  when: _dh_file_st.stat.exists == false
+
+- include: _configure_nginx_apache_style.yml
+
+- name: nginx default site is disabled
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  when: nginx_disable_default_site
+  notify: reload nginx
+
+- name: php is installed
+  apt:
+    name: php5-fpm
+    state: latest
+  when: features.php is defined
+
+- name: nginx vhost is configured
+  template: src="nginx-site.conf.j2" dest=/etc/nginx/sites-available/{{site_name}}.conf owner=root group=root mode=0644
+  register: nginx_vhost_config_template
+  notify: reload nginx
+
+- name: nginx vhost is enabled
+  file:
+    src: "/etc/nginx/sites-available/{{site_name}}.conf"
+    dest: "/etc/nginx/sites-enabled/{{site_name}}.conf"
+    state: link
+    owner: root
+    group: root
+  notify: reload nginx
