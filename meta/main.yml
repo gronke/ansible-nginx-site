@@ -1,0 +1,24 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: Stefan Grönke
+  description: Configure individual Nginx vhost-sites stored in `/etc/nginx/sites-available/`
+  company: gronke.org
+  license: MIT
+  min_ansible_version: 1.9
+  platforms:
+    - name: Debian
+      versions:
+        - jessie
+        - wheezy
+    - name: Ubuntu
+      versions:
+        - trusty
+  galaxy_tags:
+    - web
+    - nginx
+    - proxy
+    - php
+    - seafile
+

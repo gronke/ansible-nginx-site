@@ -1,7 +1,7 @@
 Ansible Role: nginx-site
 ========================
 
-This Role is used to configure individual nginx vhost-sites stored in `/etc/nginx/sites-available/`
+This Role is used to configure individual Nginx vhost-sites stored in `/etc/nginx/sites-available/`
 
 ## Configuration
 
