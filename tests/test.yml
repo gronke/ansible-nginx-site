@@ -2,6 +2,7 @@
 - hosts: all
 
   vars:
+    nginx_use_ppa: true
     encryption: "off"
     features:
       serve_htdocs:
