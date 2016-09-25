@@ -15,7 +15,7 @@
   shell: /usr/bin/openssl dhparam -out "{{ ssl_dh_file }}" {{ ssl_dh_size }}
   args:
     chdir:
-  when: (encryption != "off") and (_dh_file_st.stat.exists == false)
+  when: (encryption != "off") and not _dh_file_st.stat.exists
 
 - include: _configure_nginx_apache_style.yml
 
