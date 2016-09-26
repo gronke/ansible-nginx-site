@@ -35,8 +35,8 @@ When encryption is not explicitly disabled all `ssl_` prefixed options are requi
 | ssl_key_path                 | **yes**   | `/etc/letsencrypt/live/{{site_name}}/privkey.pem` | defaults to LetsEncrypt |
 | ssl_dh_size                  | **yes**   | 4096      | *this will take a while to generate*                          |
 | ssl_dh_file                  | **yes**   | `/etc/ssl/certs/dhparam-{{ ssl_dh_size }}.pem` | *consider pre-generating this file* |
-|ssl_hsts_max_age              | **yes**   | 604800 (1 week) | `encryption` must be set to `force` or `redirect`    |                                                      |
-|ssl_hsts_enabled              | **yes**   | `true` |  This is only enabled when `encryption` is set to `force` or `redirect` |
+|ssl_hsts_max_age              | **yes**   | 604800 (1 week) | `encryption` must be set to `force` or `redirect`    |                                                        |
+|ssl_hsts_enabled              |   no     | `true` |  This is only enabled when `encryption` is set to `force` or `redirect` |
 |
 
 ### Features
