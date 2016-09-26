@@ -9,3 +9,6 @@
   ssl_dhparam '{{ssl_dh_file}}';
   ssl_prefer_server_ciphers on;
   ssl_session_cache shared:SSL:10m;
+{%if ssl_hsts_enabled and (encryption == "force" or encryption == "redirect") %}
+  add_header Strict-Transport-Security max-age=15768000;
+{%endif%}

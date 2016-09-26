@@ -21,7 +21,8 @@ ssl_key_path: '/etc/letsencrypt/live/{{site_name}}/privkey.pem'
 letsencrypt: false
 ssl_dh_size: 4096
 ssl_dh_file: '/etc/ssl/certs/dhparam-{{ ssl_dh_size }}.pem'
-
+ssl_hsts_max_age: 604800
+ssl_hsts_enabled: true
 features:
   # serve_htdocs:
   #   document_root: /var/www
