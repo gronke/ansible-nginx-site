@@ -50,19 +50,21 @@ All options are grouped in a dict structure called `features`.
 Enabling this feature configures the vhost to serve static content
 
 ```yaml
-features:
-  serve_htdocs:
-    document_root: /var/www
+- role: gronke.nginx-site
+  features:
+    serve_htdocs:
+      document_root: /var/www
 ```
 
 optionally PHP can be installed and enabled too
 
 ```yaml
-features:
-  serve_htdocs:
-    document_root: /var/www
-    php: true
-    index: 'index.html index.php'
+- role: gronke.nginx-site
+  features:
+    serve_htdocs:
+      document_root: /var/www
+      php: true
+      index: 'index.html index.php'
 ```
 
 #### proxy
@@ -70,10 +72,12 @@ features:
 Incoming requests are proxied to a different http(s) server. Very useful when the Nginx vhost is acting as SSL proxy for other services.
 
 ```yaml
-proxy:
-  target: 'http://example.com'
-  rewrite_rules:
-    - '^/foo(.*)$ /bar$1'
+- role: gronke.nginx-site
+  features:
+    proxy:
+      target: 'http://example.com'
+      rewrite_rules:
+        - '^/foo(.*)$ /bar$1'
 ```
 
 #### seafile_fasgcgi
@@ -81,6 +85,8 @@ proxy:
 Seafile wants a lot extra configuration. This feature is planned to be deprecated in future versions and replaced with a more generic solution for complex configurations.
 
 ```yaml
-seafile_fastcgi:
-  seafile_org_name: 'My Organization'
+- role: gronke.nginx-site
+  features:
+    seafile_fastcgi:
+      seafile_org_name: 'My Organization'
 ```
