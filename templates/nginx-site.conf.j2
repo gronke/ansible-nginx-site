@@ -19,7 +19,7 @@ server {
 
 }
 {% endif %}
-{% if encryption != false %}
+{% if not encryption %}
 server {
   listen {{https_port}} ssl;
   listen [::]:{{https_port}} ssl;

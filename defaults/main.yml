@@ -42,3 +42,5 @@ log_error_file: '/var/log/nginx/{{site_name}}_error.log'
 log_level: error
 
 nginx_disable_default_site: true
+nginx_use_ppa: false
+nginx_ppa_version: stable
