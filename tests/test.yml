@@ -1,0 +1,14 @@
+---
+- hosts: all
+
+  vars:
+    encryption: "off"
+    features:
+      serve_htdocs:
+        document_root: /var/www
+        php: false
+        index: 'index.html index.html'
+
+
+  roles:
+    - role_under_test
