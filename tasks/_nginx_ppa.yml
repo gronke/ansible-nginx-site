@@ -14,7 +14,7 @@
     state: present
     update_cache: yes
   register: nginx_ppa_added_ubuntu
-  when: (ansible_distribution == 'Ubuntu' and nginx_use_ppa)
+  when: (ansible_distribution == 'Ubuntu') and (nginx_use_ppa == true)
 
 # Debian
 - name: python-software-properties is installed on Debian <= 7 (Wheezy)
@@ -22,7 +22,6 @@
     name: python-software-properties
     state: latest
   when: (ansible_distribution == "Debian") and (ansible_distribution_version.split(".")[0] < 8)
-  register: nginx_ppa_added_wheezy
 
 - name: software-properties-common is installed on Debian >= 8 (Jessie)
   apt:
@@ -36,14 +35,15 @@
     dest: /etc/apt/sources.list
     state: present
   register: nginx_ppa_added_debian
+  when: ansible_distribution == "Debian"
 
 - name: nginx repository signing keys are trusted
   command: apt-key adv --recv-key --keyserver keys.gnupg.net 7BD9BF62
-  when: nginx_ppa_added_debian.changed
+  when: nginx_ppa_added_debian is defined and nginx_ppa_added_debian.changed
 
 - name: apt-key is updated
   command: apt-key update
-  when: nginx_ppa_added_debian.changed
+  when: nginx_ppa_added_debian is defined and nginx_ppa_added_debian.changed
 
 # Update apt sources
 - name: Ensure nginx will reinstall if the PPA was just added.
@@ -53,9 +53,9 @@
   with_items:
     - nginx
     - nginx-common
-  when: (nginx_ppa_added_ubuntu.changed or nginx_ppa_added_debian.changed)
+  when: ((nginx_ppa_added_ubuntu is defined) and nginx_ppa_added_ubuntu.changed) or ((nginx_ppa_added_debian is defined) and nginx_ppa_added_debian.changed)
 
 - name: apt-packages are updated
   apt:
     update_cache: true
-  when: (nginx_ppa_added_ubuntu.changed or nginx_ppa_added_debian.changed)
+  when: ((nginx_ppa_added_ubuntu is defined) and nginx_ppa_added_ubuntu.changed) or ((nginx_ppa_added_debian is defined) and nginx_ppa_added_debian.changed)
