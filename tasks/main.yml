@@ -51,9 +51,13 @@
     group: root
   notify: reload nginx
 
+- stat:
+    path: /bin/systemctl
+  register: _systemctl_executable
+
 - name: nginx service is unmasked
   command: /bin/systemctl unmask nginx
-  when: _nginx_install.changed
+  when: _nginx_install.changed and _systemctl_executable.stat.exists
 
 - name: nginx service is enabled
   service:
