@@ -5,7 +5,7 @@ server {
   server_name{% for alias in aliases %} {{alias}}{% endfor %};
 {% if encryption == "redirect" %}
   rewrite ^ https://{{site_name}}$request_uri? permanent;
-{% elif (encryption == false) or (encryption == "optional") %}
+{% elif (encryption == "off") or (encryption == "optional") %}
 {% for feature_name, feature_config in features.items() %}
 {% include "features/%s.j2" % feature_name %}
 
@@ -19,7 +19,7 @@ server {
 
 }
 {% endif %}
-{% if not encryption %}
+{% if encryption != "off" %}
 server {
   listen {{https_port}} ssl;
   listen [::]:{{https_port}} ssl;
