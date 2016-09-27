@@ -1,20 +1,11 @@
 ---
-- name: Add PPA for Nginx
-  apt_repository:
-    repo: 'ppa:nginx/{{ nginx_ppa_version }}'
-    state: present
-    update_cache: yes
-  register: nginx_ppa_added
-  when: (ansible_distribution == 'Ubuntu' and nginx_use_ppa)
 
-- name: Ensure nginx will reinstall if the PPA was just added.
-  apt:
-    name: nginx
-    state: absent
-  when: (ansible_distribution == 'Ubuntu' and nginx_ppa_added.changed)
+- include: _nginx_ppa.yml
+  when: nginx_use_ppa
 
 - name: nginx is installed
   apt:
+    force: yes
     update_cache: yes
     cache_valid_time: 3600
     name: nginx
@@ -58,3 +49,12 @@
     owner: root
     group: root
   notify: reload nginx
+
+- name: nginx service is unmasked
+  command: /bin/systemctl unmask nginx
+
+- name: nginx service is enabled
+  service:
+    name: nginx
+    enabled: true
+    state: started

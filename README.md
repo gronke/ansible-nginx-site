@@ -20,8 +20,12 @@ This Role is used to configure individual Nginx vhost-sites stored in `/etc/ngin
 | log_error_file  | no         | `/var/log/nginx/{{site_name}}_error.log` |                                  |
 | log_level       | no         | error   | `debug`, `info`, `notice`, `warn`, `error`, `crit`, `alert`, or `emerg` |
 | nginx_disable_default_site | no | `true`       | `true` disables the default nginx vhost                   |
-| nginx_use_ppa   | no       | `false`        |  **Ubuntu or Ubuntu-based systems only** If true, will use the official nginx development ppa         |
+| nginx_use_ppa   | no       | `false`        |  **Debian-based systems only** If true, the official nginx development packet sources will be used.          |
 | nginx_ppa_version | no       | `stable`        |  `stable` or `develop`                                    |
+
+#### Nginx from official development PPA
+
+When enabling the `nginx_usa_ppa` option, keep in mind this upgrades the globally installed nginx and might affect other nginx-sites. A downgrade option is not provided, but manually deleting the packet source and re-installing nginx on the specific host should rollback the changes.
 
 ### Encryption
 

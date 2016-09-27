@@ -1,0 +1,61 @@
+---
+
+- name: apt-transport-https is installed
+  apt:
+    name: apt-transport-https
+    state: latest
+    cache_valid_time: 3600
+    update_cache: yes
+
+# Ubuntu
+- name: Add PPA for Nginx on Ubuntu
+  apt_repository:
+    repo: 'ppa:nginx/{{ nginx_ppa_version }}'
+    state: present
+    update_cache: yes
+  register: nginx_ppa_added_ubuntu
+  when: (ansible_distribution == 'Ubuntu' and nginx_use_ppa)
+
+# Debian
+- name: python-software-properties is installed on Debian <= 7 (Wheezy)
+  apt:
+    name: python-software-properties
+    state: latest
+  when: (ansible_distribution == "Debian") and (ansible_distribution_version.split(".")[0] < 8)
+  register: nginx_ppa_added_wheezy
+
+- name: software-properties-common is installed on Debian >= 8 (Jessie)
+  apt:
+    name: software-properties-common
+    state: latest
+  when: (ansible_distribution == "Debian") and (ansible_distribution_version.split(".")[0] >= 8)
+
+- name: nginx repository available
+  lineinfile:
+    line: 'deb https://nginx.org/packages/debian {{ansible_distribution_release}} nginx'
+    dest: /etc/apt/sources.list
+    state: present
+  register: nginx_ppa_added_debian
+
+- name: nginx repository signing keys are trusted
+  command: apt-key adv --recv-key --keyserver keys.gnupg.net 7BD9BF62
+  when: nginx_ppa_added_debian.changed
+
+- name: apt-key is updated
+  command: apt-key update
+  when: nginx_ppa_added_debian.changed
+
+# Update apt sources
+- name: Ensure nginx will reinstall if the PPA was just added.
+  apt:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - nginx
+    - nginx-common
+  when: (nginx_ppa_added_ubuntu.changed or nginx_ppa_added_debian.changed)
+
+- name: apt-packages are updated
+  apt:
+    update_cache: true
+  when: (nginx_ppa_added_ubuntu.changed or nginx_ppa_added_debian.changed)
