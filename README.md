@@ -1,7 +1,7 @@
 Ansible Role: nginx-site
 ========================
 
-[![Build Status](https://travis-ci.org/gronke/ansible-nginx-site.svg)](https://travis-ci.org/gronke/ansible-nginx-site)
+[![Build Status](https://travis-ci.org/gronke/ansible-nginx-site.svg?branch=master)](https://travis-ci.org/gronke/ansible-nginx-site)
 
 This Role is used to configure individual Nginx vhost-sites stored in `/etc/nginx/sites-available/`
 
