@@ -10,6 +10,7 @@
     cache_valid_time: 3600
     name: nginx
     state: latest
+  register: _nginx_install
 
 - stat:
     path: "{{ ssl_dh_file }}"
@@ -52,9 +53,9 @@
 
 - name: nginx service is unmasked
   command: /bin/systemctl unmask nginx
+  when: _nginx_install.changed
 
 - name: nginx service is enabled
   service:
     name: nginx
     enabled: true
-    state: started
