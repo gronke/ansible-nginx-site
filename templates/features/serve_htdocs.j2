@@ -1,6 +1,6 @@
   root '{{feature_config.document_root}}';
   index '{{feature_config.index}}';
-  {% if feature_config.php %}
+  {% if feature_config.php is defined and features_config.php %}
   location ~ /$ {
     try_files $uri /index.php =404;
     fastcgi_split_path_info ^(.+\.php)(/.+)$;

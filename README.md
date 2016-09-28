@@ -20,7 +20,7 @@ This Role is used to configure individual Nginx vhost-sites stored in `/etc/ngin
 | log_error_file  | no         | `/var/log/nginx/{{site_name}}_error.log` |                                  |
 | log_level       | no         | error   | `debug`, `info`, `notice`, `warn`, `error`, `crit`, `alert`, or `emerg` |
 | nginx_disable_default_site | no | `true`       | `true` disables the default nginx vhost                   |
-| nginx_use_ppa   | no       | `false`        |  **Debian-based systems only** If true, the official nginx development packet sources will be used.          |
+| nginx_use_ppa   | no       | `false`        |  **Debian-based systems only** If true, the official nginx development package sources will be used.          |
 | nginx_ppa_version | no       | `stable`        |  `stable` or `develop`                                    |
 
 #### Nginx from official development PPA
@@ -87,7 +87,7 @@ Incoming requests are proxied to a different http(s) server. Very useful when th
         - '^/foo(.*)$ /bar$1'
 ```
 
-#### seafile_fasgcgi
+#### seafile_fastcgi
 
 Seafile wants a lot extra configuration. This feature is planned to be deprecated in future versions and replaced with a more generic solution for complex configurations.
 
