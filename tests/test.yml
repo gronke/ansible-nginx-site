@@ -8,7 +8,7 @@
       serve_htdocs:
         document_root: /var/www
         php: false
-        index: 'index.html index.html'
+        index: 'index.html index.htm'
 
 
   roles:
