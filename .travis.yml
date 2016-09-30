@@ -1,6 +1,7 @@
 ---
 # Travis config and docker containers thanks to @geerlingguy
-sudo: false
+sudo: required
+
 services: docker
 
 env:
