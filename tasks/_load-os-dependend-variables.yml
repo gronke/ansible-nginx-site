@@ -1,0 +1,9 @@
+---
+
+- name: OS dependend variables are loaded
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+    - "default.yml"
+  register: _os_dependend_variables_loaded

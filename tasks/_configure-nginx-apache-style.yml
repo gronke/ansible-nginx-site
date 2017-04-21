@@ -2,23 +2,26 @@
 
 - name: /etc/nginx/sites-* directories exists
   file:
-    path: '/etc/nginx/{{item}}'
+    path: '{{ _nginx_config_dir }}/{{ item }}'
     state: directory
     owner: root
     mode: '0755'
   with_items:
     - sites-available
     - sites-enabled
+  notify: restart nginx
 
 - name: nginx configuration does not include /etc/nginx/conf.d/*
   lineinfile:
-    regexp: 'include /etc/nginx/conf.d/\*'
+    regexp: 'include {{ _nginx_config_dir }}/conf.d/\*'
     state: absent
-    dest: /etc/nginx/nginx.conf
+    dest: '{{ _nginx_config_dir }}/nginx.conf'
+  notify: restart nginx
 
 - name: nginx includes /etc/nginx/sites-enabled/*
   lineinfile:
-    line: 'include /etc/nginx/sites-enabled/*;'
+    line: 'include {{ _nginx_config_dir }}/sites-enabled/*;'
     state: present
     insertafter: 'http {'
-    dest: /etc/nginx/nginx.conf
+    dest: '{{ _nginx_config_dir }}/nginx.conf'
+  notify: restart nginx

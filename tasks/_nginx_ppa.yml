@@ -32,7 +32,7 @@
 - name: nginx repository available
   lineinfile:
     line: 'deb https://nginx.org/packages/debian {{ansible_distribution_release}} nginx'
-    dest: /etc/apt/sources.list
+    dest: '{{ _etc_dir }}/apt/sources.list'
     state: present
   register: nginx_ppa_added_debian
   when: ansible_distribution == "Debian"
