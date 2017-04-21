@@ -22,7 +22,7 @@
     chdir:
   when: (encryption != "off") and not _dh_file_st.stat.exists
 
-- include: _configure_nginx_apache_style.yml
+- include: _configure-nginx-apache-style.yml
 
 - name: nginx default site is disabled
   file:
