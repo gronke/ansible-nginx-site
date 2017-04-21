@@ -38,7 +38,11 @@
   when: features.php is defined
 
 - name: nginx vhost is configured
-  template: src="nginx-site.conf.j2" dest=/etc/nginx/sites-available/{{site_name}}.conf owner=root group=root mode=0644
+  template: 
+    src: "nginx-site.conf.j2"
+    dest: /etc/nginx/sites-available/{{site_name}}.conf
+    owner: root 
+    mode: '0644'
   register: nginx_vhost_config_template
   notify: reload nginx
 
@@ -48,7 +52,7 @@
     dest: "/etc/nginx/sites-enabled/{{site_name}}.conf"
     state: link
     owner: root
-    group: root
+    mode: '0644'
   notify: reload nginx
 
 - stat:
