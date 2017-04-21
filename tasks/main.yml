@@ -15,14 +15,14 @@
   register: _nginx_install
 
 - stat:
-    path: "{{ ssl_dh_file }}"
+    path: '{{ ssl_dh_file }}'
   register: _dh_file_st
 
 - name: Diffie-Hellman parameter is generated
   shell: /usr/bin/openssl dhparam -out "{{ ssl_dh_file }}" {{ ssl_dh_size }}
   args:
     chdir:
-  when: (encryption != "off") and not _dh_file_st.stat.exists
+  when: (encryption != 'off') and not _dh_file_st.stat.exists
 
 - include: _configure-nginx-apache-style.yml
 

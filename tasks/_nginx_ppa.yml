@@ -21,13 +21,13 @@
   apt:
     name: python-software-properties
     state: latest
-  when: (ansible_distribution == "Debian") and (ansible_distribution_version.split(".")[0] < 8)
+  when: (ansible_distribution == 'Debian') and (ansible_distribution_version.split('.')[0] < 8)
 
 - name: software-properties-common is installed on Debian >= 8 (Jessie)
   apt:
     name: software-properties-common
     state: latest
-  when: (ansible_distribution == "Debian") and (ansible_distribution_version.split(".")[0] >= 8)
+  when: (ansible_distribution == 'Debian') and (ansible_distribution_version.split('.')[0] >= 8)
 
 - name: nginx repository available
   lineinfile:
@@ -35,7 +35,7 @@
     dest: '{{ _etc_dir }}/apt/sources.list'
     state: present
   register: nginx_ppa_added_debian
-  when: ansible_distribution == "Debian"
+  when: ansible_distribution == 'Debian'
 
 - name: nginx repository signing keys are trusted
   command: apt-key adv --recv-key --keyserver keys.gnupg.net 7BD9BF62
@@ -48,7 +48,7 @@
 # Update apt sources
 - name: Ensure nginx will reinstall if the PPA was just added.
   apt:
-    name: "{{ item }}"
+    name: '{{ item }}'
     state: absent
   with_items:
     - nginx
