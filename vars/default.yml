@@ -1,4 +1,4 @@
 ---
 
 _etc_dir: /etc
-_nginx_config_dir: '{{ _etc_dir }}/nginx'
+_nginx_config_dir: '/etc/nginx'
