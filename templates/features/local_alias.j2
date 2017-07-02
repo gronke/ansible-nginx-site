@@ -1,0 +1,5 @@
+{% for rule in feature_config %}
+  location {{ rule.location }} {
+    alias {{ rule.alias }};
+  }
+{% endfor %}

@@ -37,6 +37,10 @@ features:
   # seafile_fastcgi:
   #   seafile_org_name: 'My Organization'
 
+  # local_alias:
+  #   - location: /.well-known/acme-challenge
+  #     alias: /opt/letsencrypt/htdocs
+
 log_access_file: '/var/log/nginx/{{site_name}}_access.log'
 log_error_file: '/var/log/nginx/{{site_name}}_error.log'
 log_level: error
@@ -44,3 +48,4 @@ log_level: error
 nginx_disable_default_site: true
 nginx_use_ppa: false
 nginx_ppa_version: stable
+
