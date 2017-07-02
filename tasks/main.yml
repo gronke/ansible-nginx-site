@@ -3,9 +3,25 @@
 - include: _load-os-dependend-variables.yml
 
 - include: _nginx_ppa.yml
-  when: nginx_use_ppa
+  when: (nginx_use_ppa) and (ansible_pkg_mgr == "apt")
 
-- name: nginx is installed
+- set_fact:
+    _nginx_site_packages:
+      - nginx
+    _nginx_site_services:
+      - nginx
+
+- set_fact:
+    _nginx_site_packages: "{{ _nginx_site_packages }} + ['php5-fpm']"
+    _nginx_site_services: "{{ _nginx_site_services }} + ['php5-fpm']"
+  when: (features.php is defined) and (ansible_pkg_mgr == "apt")
+
+- set_fact:
+    _nginx_site_packages: "{{ _nginx_site_packages }} + ['php56']"
+    _nginx_site_services: "{{ _nginx_site_services }} + ['php_fpm']"
+  when: (features.php is defined) and (ansible_pkg_mgr == "pkgng")
+
+- name: Packages are installed with Aptitude
   apt:
     force: yes
     update_cache: yes
@@ -13,6 +29,19 @@
     name: nginx
     state: latest
   register: _nginx_install
+  when: ansible_pkg_mgr == "apt"
+
+- name: Packages are installed with FreeBSD pkg
+  pkgng:
+    name: nginx
+    state: present
+  when: ansible_pkg_mgr == "pkgng"
+
+- name: Services are enabled
+  service:
+    name: "{{ item }}"
+    enabled: yes
+  with_items: '{{ _nginx_site_services }}'
 
 - stat:
     path: '{{ ssl_dh_file }}'
@@ -32,12 +61,6 @@
     state: absent
   when: nginx_disable_default_site
   notify: reload nginx
-
-- name: php is installed
-  apt:
-    name: php5-fpm
-    state: latest
-  when: features.php is defined
 
 - name: nginx vhost is configured
   template: 

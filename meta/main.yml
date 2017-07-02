@@ -15,6 +15,10 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - trusty
+    - name: FreeBSD
+      versions:
+      - 10
+      - 11
   galaxy_tags:
     - web
     - nginx
