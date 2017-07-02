@@ -47,11 +47,25 @@
     path: '{{ ssl_dh_file }}'
   register: _dh_file_st
 
+- name: Diffie-Hellman parameter storage directory exists
+  file:
+    path: "{{ ssl_dh_file | dirname }}"
+    state: directory
+    owner: root
+    force: true
+    mode: 0644
+
 - name: Diffie-Hellman parameter is generated
   shell: /usr/bin/openssl dhparam -out "{{ ssl_dh_file }}" {{ ssl_dh_size }}
   args:
     chdir:
   when: (encryption != 'off') and not _dh_file_st.stat.exists
+
+- name: Diffie-Hellman parameter file has correct permissions
+  file:
+    path: "{{ ssl_dh_file }}"
+    owner: root
+    mode: 0644
 
 - include: _configure-nginx-apache-style.yml
 
