@@ -1,0 +1,10 @@
+{% for rule in feature_config %}
+{% if rule.condition is defined %}
+  if({{ rule.condition }}) {
+  {% endif %}  
+  rewrite {{ rule.location }} {{ rule.target }} {{ "redirect" if ((rule.permanent is not defined) or (rule.permanent != true)) else "permanent" }};
+{% if rule.condition is defined %}
+  }
+{% endif %}
+{% endfor %}
+
